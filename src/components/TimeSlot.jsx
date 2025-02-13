@@ -1,35 +1,11 @@
 import React from "react";
 
 const TimeSlot = ({ time, interviews, onAdd, onEdit, onDelete }) => {
-  // Check if the candidate or interviewer already has an interview at this time
-  const hasConflict = (newInterview) => {
-    return interviews.some(
-      (interview) =>
-        interview.candidate === newInterview.candidate ||
-        interview.interviewer === newInterview.interviewer
-    );
-  };
-
-  const handleAdd = () => {
-    const newInterview = {
-      interviewer: "New Interviewer", // Default or prompt for input
-      candidate: "New Candidate", // Default or prompt for input
-      interviewType: "technical", // Default or prompt for input
-      date: new Date().toISOString().split("T")[0], // Default to today's date
-    };
-
-    if (hasConflict(newInterview)) {
-      alert("❌ Conflict: Candidate or Interviewer already has an interview at this time!");
-    } else {
-      onAdd(time, newInterview);
-    }
-  };
-
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <h4 style={styles.time}>{time}</h4>
-        <button onClick={handleAdd} style={styles.addButton}>
+        <button onClick={() => onAdd(time)} style={styles.addButton}>
           ➕
         </button>
       </div>
@@ -122,7 +98,6 @@ const styles = {
   editButton: {
     background: "transparent",
     color: "black",
-
     padding: "5px 10px",
     borderRadius: "4px",
     cursor: "pointer",
@@ -132,7 +107,6 @@ const styles = {
   deleteButton: {
     background: "transparent",
     color: "black",
-   
     padding: "5px 10px",
     borderRadius: "4px",
     cursor: "pointer",

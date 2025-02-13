@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TimeSlot from "./TimeSlot";
 import InterviewForm from "./InterviewForm";
 
@@ -7,6 +7,17 @@ const Scheduler = ({ selectedDay }) => {
   const [interviews, setInterviews] = useState({});
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
+
+  // Load data from localStorage on component mount
+  useEffect(() => {
+    const savedInterviews = JSON.parse(localStorage.getItem("interviews")) || {};
+    setInterviews(savedInterviews);
+  }, []);
+
+  // Save data to localStorage whenever interviews change
+  useEffect(() => {
+    localStorage.setItem("interviews", JSON.stringify(interviews));
+  }, [interviews]);
 
   const addInterview = (time) => {
     setSelectedSlot(time);
@@ -19,13 +30,13 @@ const Scheduler = ({ selectedDay }) => {
   };
 
   const deleteInterview = (time, index) => {
-    setInterviews((prev) => ({
-      ...prev,
-      [selectedDay]: {
-        ...prev[selectedDay],
-        [time]: prev[selectedDay][time].filter((_, i) => i !== index),
-      },
-    }));
+    setInterviews((prev) => {
+      const updated = { ...prev };
+      if (updated[selectedDay] && updated[selectedDay][time]) {
+        updated[selectedDay][time] = updated[selectedDay][time].filter((_, i) => i !== index);
+      }
+      return updated;
+    });
   };
 
   const handleFormSubmit = (formData) => {

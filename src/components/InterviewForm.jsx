@@ -12,9 +12,10 @@ const InterviewForm = ({ onClose, onSubmit, initialData }) => {
   };
 
   const handleSubmit = async () => {
-    const{candidate}=formData
+    const { candidate } = formData;
+    alert(`${candidate} slot booked successfully`);
     setLoading(true); // Start loading
-    alert(`${candidate} slot booked sucessfully`)
+
     try {
       // Simulate an API call or async operation
       await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
